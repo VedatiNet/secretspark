@@ -5,16 +5,56 @@ import { THEMES } from "../lib/themes";
 
 const categories = Object.values(THEMES);
 
+function enhanceMessage(text, theme) {
+  const clean = text.trim();
+  if (!clean) {
+    return {
+      message: theme.placeholder,
+      note: theme.sparkLine
+    };
+  }
+
+  const endings = {
+    partner: " — because some feelings deserve to arrive beautifully.",
+    family: " — because home is a feeling, not just a place.",
+    friends: " — because memories become brighter when they are shared.",
+    work: " — with appreciation, clarity, and respect."
+  };
+
+  const alreadyLong = clean.length > 120;
+  return {
+    message: alreadyLong ? clean : clean + endings[theme.key],
+    note: theme.sparkLine
+  };
+}
+
 export default function Home() {
   const [category, setCategory] = useState("partner");
   const [message, setMessage] = useState("");
+  const [sparked, setSparked] = useState(false);
+  const [toast, setToast] = useState("");
   const theme = THEMES[category];
 
+  const enhanced = useMemo(() => {
+    if (!sparked) return null;
+    return enhanceMessage(message, theme);
+  }, [sparked, message, theme]);
+
   const previewText = useMemo(() => {
-    const clean = message.trim();
-    if (!clean) return "Your words will appear here as a soft preview before the cinematic reveal.";
-    return clean.length > 150 ? clean.slice(0, 150) + "..." : clean;
-  }, [message]);
+    const base = enhanced?.message || message.trim() || "Your words will appear here as a soft preview before the cinematic reveal.";
+    return base.length > 165 ? base.slice(0, 165) + "..." : base;
+  }, [enhanced, message]);
+
+  const handleSpark = () => {
+    setSparked(true);
+    setToast(theme.sparkLine);
+    window.setTimeout(() => setToast(""), 1800);
+  };
+
+  const handleCategory = (key) => {
+    setCategory(key);
+    setSparked(false);
+  };
 
   return (
     <>
@@ -40,6 +80,8 @@ export default function Home() {
         <div className="softHaze hazeRight" />
         <div className="vignette" />
 
+        {toast && <div className="toast">{toast}</div>}
+
         <section className="shell">
           <header className="hero">
             <div className="brandWrap">
@@ -56,7 +98,7 @@ export default function Home() {
                     key={item.key}
                     type="button"
                     className={`cat ${item.key === category ? "active" : ""}`}
-                    onClick={() => setCategory(item.key)}
+                    onClick={() => handleCategory(item.key)}
                     aria-pressed={item.key === category}
                   >
                     <span className="catIcon">{item.icon}</span>
@@ -71,10 +113,10 @@ export default function Home() {
           <section className="experience">
             <div className="panel preview">
               <div className="label">Live message preview</div>
-              <div className="previewCard">
+              <div className={`previewCard ${sparked ? "sparked" : ""}`}>
                 <div className="spark">✣</div>
                 <blockquote>“{previewText}”</blockquote>
-                <p>Prepared for a {theme.label} reveal</p>
+                <p>{sparked ? enhanced?.note : `Prepared for a ${theme.label} reveal`}</p>
               </div>
             </div>
 
@@ -83,13 +125,33 @@ export default function Home() {
               <textarea
                 id="message"
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                  setSparked(false);
+                }}
                 maxLength={2200}
-                placeholder={theme.quote}
+                placeholder={theme.placeholder}
               />
-              <button className="ghostBtn" type="button">✣ Spark the emotion</button>
-              <Link className="mainBtn" href="/r/demo">▶ Preview the Cinematic Reveal</Link>
-              <button className="approveBtn" type="button">Approve reveal to continue</button>
+
+              <div className="counter">{message.length}/2200</div>
+
+              <button className="ghostBtn" type="button" onClick={handleSpark}>
+                ✣ Spark the emotion
+              </button>
+
+              <Link
+                className="mainBtn"
+                href={{
+                  pathname: "/r/demo",
+                  query: { category, message: encodeURIComponent(previewText) }
+                }}
+              >
+                ▶ Preview the Cinematic Reveal
+              </Link>
+
+              <button className="approveBtn" type="button" onClick={() => setToast("Payment + secret link comes in the next backend phase")}>
+                Approve reveal to continue
+              </button>
             </div>
           </section>
 

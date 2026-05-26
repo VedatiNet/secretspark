@@ -1,3 +1,3 @@
 # SecretSpark
 
-Soft cinematic v5. Lower eye-strain ambient glow, mobile compact layout, dynamic category colors.
+Best Possible v6: softer premium glow, compact mobile UI, dynamic category themes, working Spark the Emotion, reveal preview route.
