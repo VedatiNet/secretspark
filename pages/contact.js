@@ -1,0 +1,1 @@
+export default function Contact(){return <main className="page"><div className="stars"/><section className="legal"><h1>Contact</h1><p>Need help with SecretSpark?</p><p>Email: <b>support@secretspark.me</b></p><p>For abuse reports, include the reveal link and a short explanation.</p><p><a href="/">Back to SecretSpark</a></p></section></main>}
