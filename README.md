@@ -1,3 +1,3 @@
-# SecretSpark Interactive v7 Autofill
+# SecretSpark FULL RECOVERY v8
 
-Spark the emotion now fills textarea with rotating category-specific suggestions on every click.
+Full safe recovery package with CSS, _app.js, autofill, category colors, and working Next.js structure.

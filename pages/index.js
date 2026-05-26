@@ -10,68 +10,51 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [sparked, setSparked] = useState(false);
   const suggestionIndex = useRef({ partner: 0, family: 0, friends: 0, work: 0 });
-
   const theme = THEMES[category];
 
   const previewText = useMemo(() => {
     const clean = message.trim();
-    if (!clean) {
-      return "Your words will appear here as a soft preview before the cinematic reveal.";
-    }
+    if (!clean) return "Your words will appear here as a soft preview before the cinematic reveal.";
     return clean.length > 150 ? clean.slice(0, 150) + "..." : clean;
   }, [message]);
 
   function sparkEmotion() {
     const list = SUGGESTIONS[category] || [];
-    if (list.length > 0) {
-      const currentIndex = suggestionIndex.current[category] % list.length;
-      setMessage(list[currentIndex]);
-      suggestionIndex.current[category] = currentIndex + 1;
+    if (list.length) {
+      const i = suggestionIndex.current[category] % list.length;
+      setMessage(list[i]);
+      suggestionIndex.current[category] = i + 1;
     }
-
     setSparked(true);
-    window.setTimeout(() => setSparked(false), 1050);
+    setTimeout(() => setSparked(false), 1000);
   }
 
-  function changeCategory(nextCategory) {
-    setCategory(nextCategory);
+  function changeCategory(next) {
+    setCategory(next);
     setMessage("");
   }
 
   return (
     <>
       <Head>
-        <title>SecretSpark — Turn emotions into unforgettable moments</title>
-        <meta
-          name="description"
-          content="Create cinematic emotional reveal messages for people who matter."
-        />
+        <title>SecretSpark</title>
+        <meta name="description" content="Turn emotions into unforgettable moments." />
         <meta name="theme-color" content={theme.deep} />
       </Head>
 
       <main
-        className={`app ${sparked ? "sparked" : ""}`}
+        className="app"
         style={{
           "--primary": theme.primary,
           "--second": theme.second,
           "--soft": theme.soft,
           "--deep": theme.deep,
-          "--cta": theme.cta,
         }}
       >
-        <div className="grain" />
         <div className="stars" />
         <div className="ambient ambientLeft" />
         <div className="ambient ambientRight" />
-
-        {sparked && (
-          <div className="sparkBurst" aria-hidden="true">
-            <span>✦</span>
-            <span>✧</span>
-            <span>✣</span>
-            <span>✦</span>
-          </div>
-        )}
+        {sparked && <div className="sparkBurst"><span>✦</span><span>✧</span><span>✣</span><span>✦</span></div>}
 
         <section className="wrap">
           <header className="top">
@@ -86,10 +69,10 @@ export default function Home() {
               <div className="cats">
                 {categories.map((item) => (
                   <button
-                    className={`cat ${category === item.key ? "active" : ""}`}
                     key={item.key}
-                    onClick={() => changeCategory(item.key)}
                     type="button"
+                    className={`cat ${category === item.key ? "active" : ""}`}
+                    onClick={() => changeCategory(item.key)}
                   >
                     <span>{item.icon}</span>
                     <b>{item.label}</b>
@@ -101,7 +84,7 @@ export default function Home() {
           </header>
 
           <section className="mainGrid">
-            <div className="preview">
+            <div>
               <div className="eyebrow">Live message preview</div>
               <article className="previewCard">
                 <div className="sparkIcon">✣</div>
@@ -110,31 +93,24 @@ export default function Home() {
               </article>
             </div>
 
-            <div className="composer">
+            <div>
               <label className="eyebrow" htmlFor="msg">Write the message</label>
-
               <div className="textareaWrap">
                 <textarea
                   id="msg"
                   value={message}
                   maxLength={2200}
                   placeholder={theme.quote}
-                  onChange={(event) => setMessage(event.target.value)}
+                  onChange={(e) => setMessage(e.target.value)}
                 />
                 <small>{message.length}/2200</small>
               </div>
 
-              <button onClick={sparkEmotion} className="sparkBtn" type="button">
+              <button className="sparkBtn" type="button" onClick={sparkEmotion}>
                 ✦ Spark the emotion
               </button>
-
-              <Link className="previewBtn" href="/r/demo">
-                ▶ Preview the Cinematic Reveal
-              </Link>
-
-              <button className="approveBtn" type="button">
-                Approve reveal to continue
-              </button>
+              <Link className="previewBtn" href="/r/demo">▶ Preview the Cinematic Reveal</Link>
+              <button className="approveBtn" type="button">Approve reveal to continue</button>
             </div>
           </section>
 
