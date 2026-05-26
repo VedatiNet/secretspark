@@ -1,3 +1,3 @@
-# SecretSpark Interactive v6
+# SecretSpark Interactive v7 Autofill
 
-Adds working category color switching, Spark animation, cleaner buttons, and compact mobile polish.
+Spark the emotion now fills textarea with rotating category-specific suggestions on every click.
