@@ -1,3 +1,3 @@
-# SecretSpark
+# SecretSpark Interactive v6
 
-Best Possible v6: softer premium glow, compact mobile UI, dynamic category themes, working Spark the Emotion, reveal preview route.
+Adds working category color switching, Spark animation, cleaner buttons, and compact mobile polish.

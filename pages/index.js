@@ -5,56 +5,22 @@ import { THEMES } from "../lib/themes";
 
 const categories = Object.values(THEMES);
 
-function enhanceMessage(text, theme) {
-  const clean = text.trim();
-  if (!clean) {
-    return {
-      message: theme.placeholder,
-      note: theme.sparkLine
-    };
-  }
-
-  const endings = {
-    partner: " — because some feelings deserve to arrive beautifully.",
-    family: " — because home is a feeling, not just a place.",
-    friends: " — because memories become brighter when they are shared.",
-    work: " — with appreciation, clarity, and respect."
-  };
-
-  const alreadyLong = clean.length > 120;
-  return {
-    message: alreadyLong ? clean : clean + endings[theme.key],
-    note: theme.sparkLine
-  };
-}
-
 export default function Home() {
   const [category, setCategory] = useState("partner");
   const [message, setMessage] = useState("");
   const [sparked, setSparked] = useState(false);
-  const [toast, setToast] = useState("");
   const theme = THEMES[category];
 
-  const enhanced = useMemo(() => {
-    if (!sparked) return null;
-    return enhanceMessage(message, theme);
-  }, [sparked, message, theme]);
-
   const previewText = useMemo(() => {
-    const base = enhanced?.message || message.trim() || "Your words will appear here as a soft preview before the cinematic reveal.";
-    return base.length > 165 ? base.slice(0, 165) + "..." : base;
-  }, [enhanced, message]);
+    const clean = message.trim();
+    if (!clean) return "Your words will appear here as a soft preview before the cinematic reveal.";
+    return clean.length > 150 ? clean.slice(0, 150) + "..." : clean;
+  }, [message]);
 
-  const handleSpark = () => {
+  function sparkEmotion() {
     setSparked(true);
-    setToast(theme.sparkLine);
-    window.setTimeout(() => setToast(""), 1800);
-  };
-
-  const handleCategory = (key) => {
-    setCategory(key);
-    setSparked(false);
-  };
+    setTimeout(() => setSparked(false), 1050);
+  }
 
   return (
     <>
@@ -65,44 +31,46 @@ export default function Home() {
       </Head>
 
       <main
-        className="page"
+        className={`app ${sparked ? "sparked" : ""}`}
         style={{
           "--primary": theme.primary,
-          "--secondary": theme.secondary,
-          "--haze-a": theme.hazeA,
-          "--haze-b": theme.hazeB,
-          "--accent-soft": theme.accentSoft,
-          "--deep": theme.deep
+          "--second": theme.second,
+          "--soft": theme.soft,
+          "--deep": theme.deep,
+          "--cta": theme.cta,
         }}
       >
+        <div className="grain" />
         <div className="stars" />
-        <div className="softHaze hazeLeft" />
-        <div className="softHaze hazeRight" />
-        <div className="vignette" />
+        <div className="ambient ambientLeft" />
+        <div className="ambient ambientRight" />
 
-        {toast && <div className="toast">{toast}</div>}
+        {sparked && (
+          <div className="sparkBurst" aria-hidden="true">
+            <span>✦</span><span>✧</span><span>✣</span><span>✦</span>
+          </div>
+        )}
 
-        <section className="shell">
-          <header className="hero">
-            <div className="brandWrap">
+        <section className="wrap">
+          <header className="top">
+            <div className="brand">
               <h1>SecretSpark</h1>
               <p>Turn emotions into unforgettable moments.</p>
-              <div className="price">$1.99 per SecretSpark moment</div>
+              <strong>$1.99 per SecretSpark moment</strong>
             </div>
 
-            <div className="categoryBlock">
-              <div className="label">Choose the feeling</div>
-              <div className="categoryGrid">
+            <div className="selector">
+              <div className="eyebrow">Choose the feeling</div>
+              <div className="cats">
                 {categories.map((item) => (
                   <button
+                    className={`cat ${category === item.key ? "active" : ""}`}
                     key={item.key}
+                    onClick={() => setCategory(item.key)}
                     type="button"
-                    className={`cat ${item.key === category ? "active" : ""}`}
-                    onClick={() => handleCategory(item.key)}
-                    aria-pressed={item.key === category}
                   >
-                    <span className="catIcon">{item.icon}</span>
-                    <strong>{item.label}</strong>
+                    <span>{item.icon}</span>
+                    <b>{item.label}</b>
                     <small>{item.sub}</small>
                   </button>
                 ))}
@@ -110,52 +78,44 @@ export default function Home() {
             </div>
           </header>
 
-          <section className="experience">
-            <div className="panel preview">
-              <div className="label">Live message preview</div>
-              <div className={`previewCard ${sparked ? "sparked" : ""}`}>
-                <div className="spark">✣</div>
-                <blockquote>“{previewText}”</blockquote>
-                <p>{sparked ? enhanced?.note : `Prepared for a ${theme.label} reveal`}</p>
-              </div>
+          <section className="mainGrid">
+            <div className="preview">
+              <div className="eyebrow">Live message preview</div>
+              <article className="previewCard">
+                <div className="sparkIcon">✣</div>
+                <p>“{previewText}”</p>
+                <small>Prepared for a {theme.label} reveal</small>
+              </article>
             </div>
 
-            <div className="panel compose">
-              <label className="label" htmlFor="message">Write the message</label>
-              <textarea
-                id="message"
-                value={message}
-                onChange={(e) => {
-                  setMessage(e.target.value);
-                  setSparked(false);
-                }}
-                maxLength={2200}
-                placeholder={theme.placeholder}
-              />
+            <div className="composer">
+              <label className="eyebrow" htmlFor="msg">Write the message</label>
+              <div className="textareaWrap">
+                <textarea
+                  id="msg"
+                  value={message}
+                  maxLength={2200}
+                  placeholder={theme.quote}
+                  onChange={(e) => setMessage(e.target.value)}
+                />
+                <small>{message.length}/2200</small>
+              </div>
 
-              <div className="counter">{message.length}/2200</div>
-
-              <button className="ghostBtn" type="button" onClick={handleSpark}>
-                ✣ Spark the emotion
+              <button onClick={sparkEmotion} className="sparkBtn" type="button">
+                ✦ Spark the emotion
               </button>
 
-              <Link
-                className="mainBtn"
-                href={{
-                  pathname: "/r/demo",
-                  query: { category, message: encodeURIComponent(previewText) }
-                }}
-              >
+              <Link className="previewBtn" href="/r/demo">
                 ▶ Preview the Cinematic Reveal
               </Link>
 
-              <button className="approveBtn" type="button" onClick={() => setToast("Payment + secret link comes in the next backend phase")}>
+              <button className="approveBtn" type="button">
                 Approve reveal to continue
               </button>
             </div>
           </section>
 
-          <footer className="footer">
+          <footer>
             <Link href="/terms">Terms</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/contact">Contact</Link>
