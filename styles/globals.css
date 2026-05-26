@@ -2,17 +2,25 @@
 
 .previewCard p {
   font-family: Georgia, "Times New Roman", serif !important;
-  font-weight: 400 !important;
+  font-weight: 300 !important;
   font-style: italic !important;
   letter-spacing: -0.025em !important;
-  line-height: 1.58 !important;
+  line-height: 1.7 !important;
   font-size: clamp(18px, 1.7vw, 26px) !important;
   color: rgba(255,255,255,0.93) !important;
   text-shadow: 0 2px 14px rgba(0,0,0,0.18) !important;
-  max-width: 78% !important;
+  max-width: 72% !important;
   margin: 0 auto !important;
 }
 
+.previewCard {
+  padding: 56px 28px !important;
+  min-height: 320px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  flex-direction:column !important;
+}
 .previewCard small {
   margin-top: 18px !important;
   color: rgba(255, 255, 255, 0.42) !important;
