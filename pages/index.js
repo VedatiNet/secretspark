@@ -12,10 +12,8 @@ export default function Home() {
 
   const previewText = useMemo(() => {
     const clean = message.trim();
-    if (!clean) {
-      return "Your words will appear here as a soft preview before the cinematic reveal.";
-    }
-    return clean.length > 145 ? clean.slice(0, 145) + "..." : clean;
+    if (!clean) return "Your words will appear here as a soft preview before the cinematic reveal.";
+    return clean.length > 150 ? clean.slice(0, 150) + "..." : clean;
   }, [message]);
 
   return (
@@ -23,8 +21,6 @@ export default function Home() {
       <Head>
         <title>SecretSpark — Turn emotions into unforgettable moments</title>
         <meta name="description" content="Create cinematic emotional reveal messages for people who matter." />
-        <meta property="og:title" content="SecretSpark" />
-        <meta property="og:description" content="Turn emotions into unforgettable moments." />
         <meta name="theme-color" content={theme.deep} />
       </Head>
 
@@ -33,13 +29,17 @@ export default function Home() {
         style={{
           "--primary": theme.primary,
           "--secondary": theme.secondary,
-          "--soft": theme.soft,
+          "--haze-a": theme.hazeA,
+          "--haze-b": theme.hazeB,
+          "--accent-soft": theme.accentSoft,
           "--deep": theme.deep
         }}
       >
         <div className="stars" />
-        <div className="orb orbA" />
-        <div className="orb orbB" />
+        <div className="softHaze hazeLeft" />
+        <div className="softHaze hazeRight" />
+        <div className="vignette" />
+
         <section className="shell">
           <header className="hero">
             <div className="brandWrap">
@@ -88,9 +88,7 @@ export default function Home() {
                 placeholder={theme.quote}
               />
               <button className="ghostBtn" type="button">✣ Spark the emotion</button>
-              <Link className="mainBtn" href="/r/demo">
-                ▶ Preview the Cinematic Reveal
-              </Link>
+              <Link className="mainBtn" href="/r/demo">▶ Preview the Cinematic Reveal</Link>
               <button className="approveBtn" type="button">Approve reveal to continue</button>
             </div>
           </section>

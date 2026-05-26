@@ -1,10 +1,3 @@
 # SecretSpark
 
-Mobile-first cinematic Next.js production UI.
-
-Routes:
-- `/`
-- `/r/demo`
-- `/terms`
-- `/privacy`
-- `/contact`
+Soft cinematic v5. Lower eye-strain ambient glow, mobile compact layout, dynamic category colors.
