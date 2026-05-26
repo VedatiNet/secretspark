@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "installCommand": "bash ./vercel_install.sh",
+  "buildCommand": "bash ./vercel_build.sh",
+  "outputDirectory": "build/web",
+  "rewrites": [
+    { "source": "/r/(.*)", "destination": "/index.html" },
+    { "source": "/terms", "destination": "/index.html" },
+    { "source": "/privacy", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
