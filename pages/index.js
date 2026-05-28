@@ -11,12 +11,15 @@ export default function Home() {
   const [sparked, setSparked] = useState(false);
   const [revealOpen, setRevealOpen] = useState(false);
   const suggestionIndex = useRef({ partner: 0, family: 0, friends: 0, work: 0 });
+
   const theme = THEMES[category];
 
   const previewText = useMemo(() => {
     const clean = message.trim();
-    if (!clean) return "Your words will appear here as a soft preview before the cinematic reveal.";
-    return clean.length > 190 ? clean.slice(0, 190) + "..." : clean;
+    if (!clean) {
+      return "Your words will appear here as a soft preview before the cinematic reveal.";
+    }
+    return clean.length > 180 ? clean.slice(0, 180) + "..." : clean;
   }, [message]);
 
   function sparkEmotion() {
@@ -27,11 +30,11 @@ export default function Home() {
       suggestionIndex.current[category] = index + 1;
     }
     setSparked(true);
-    window.setTimeout(() => setSparked(false), 900);
+    window.setTimeout(() => setSparked(false), 950);
   }
 
-  function changeCategory(next) {
-    setCategory(next);
+  function changeCategory(nextCategory) {
+    setCategory(nextCategory);
     setMessage("");
   }
 
@@ -48,8 +51,16 @@ export default function Home() {
         <meta name="theme-color" content="#050611" />
       </Head>
 
-      <main className="app" style={{ "--primary": theme.primary, "--second": theme.second, "--soft": theme.soft }}>
-        <div className="stars" />
+      <main
+        className="app"
+        style={{
+          "--primary": theme.primary,
+          "--second": theme.second,
+          "--soft": theme.soft,
+        }}
+      >
+        <div className="pageStars" />
+
         <section className="wrap">
           <header className="top">
             <div className="brand">
@@ -95,14 +106,22 @@ export default function Home() {
                   value={message}
                   maxLength={2200}
                   placeholder={theme.quote}
-                  onChange={(e) => setMessage(e.target.value)}
+                  onChange={(event) => setMessage(event.target.value)}
                 />
                 <small>{message.length}/2200</small>
               </div>
 
-              <button className="sparkBtn" type="button" onClick={sparkEmotion}>✦ Spark the emotion</button>
-              <button className="previewBtn" type="button" onClick={openReveal}>▶ Preview the Cinematic Reveal</button>
-              <button className="approveBtn" type="button">Approve reveal to continue</button>
+              <button className="sparkBtn" type="button" onClick={sparkEmotion}>
+                ✦ Spark the emotion
+              </button>
+
+              <button className="previewBtn" type="button" onClick={openReveal}>
+                ▶ Preview the Cinematic Reveal
+              </button>
+
+              <button className="approveBtn" type="button">
+                Approve reveal to continue
+              </button>
             </div>
           </section>
 
@@ -113,40 +132,55 @@ export default function Home() {
           </footer>
         </section>
 
-        {sparked && <div className="sparkBurst"><span>✦</span><span>✧</span><span>✣</span><span>✦</span></div>}
+        {sparked && (
+          <div className="sparkBurst" aria-hidden="true">
+            <span>✦</span><span>✧</span><span>✣</span><span>✦</span>
+          </div>
+        )}
 
         {revealOpen && (
-          <section className="originalReveal" role="dialog" aria-modal="true">
-            <button className="closeReveal" type="button" onClick={() => setRevealOpen(false)}>×</button>
-            <div className="revealSky" />
-            <div className="loadingText">Loading Secret Spark</div>
+          <section className="oldReveal" role="dialog" aria-modal="true">
+            <button className="closeReveal" type="button" onClick={() => setRevealOpen(false)}>
+              ×
+            </button>
 
-            <div className="orbStage">
-              <div className="orbRing ringA" />
-              <div className="orbRing ringB" />
-              <div className="orbRing ringC" />
-              <div className="darkOrb" />
+            <div className="oldSky" />
+
+            <div className="oldLoading">Loading Secret Spark</div>
+
+            <div className="oldOrbStage">
+              <div className="oldOrbGlow" />
+              <div className="oldOrbParticles">
+                {Array.from({ length: 40 }).map((_, i) => (
+                  <span key={i} style={{ "--i": i }} />
+                ))}
+              </div>
+              <div className="oldRing oldRingA" />
+              <div className="oldRing oldRingB" />
+              <div className="oldRing oldRingC" />
+              <div className="oldDarkOrb" />
             </div>
 
-            <div className="implosion">
-              {Array.from({ length: 46 }).map((_, i) => (
+            <div className="oldBurst">
+              {Array.from({ length: 48 }).map((_, i) => (
                 <i key={i} style={{ "--i": i }} />
               ))}
             </div>
 
-            <div className="whiteFlash" />
+            <div className="oldFlash" />
 
-            <div className="finalReveal">
-              <div className="finalCard">
-                <div className="finalIcon">✦</div>
+            <div className="oldFinal">
+              <div className="oldFinalCard">
+                <div className="oldFinalIcon">✦</div>
                 <p>“{previewText}”</p>
-                <small>— Heart Moment</small>
+                <small>— {theme.moment}</small>
               </div>
-              <div className="approval">
+
+              <div className="oldApproveRow">
                 <span>Does this reveal feel perfect?</span>
                 <div>
                   <button type="button" onClick={() => setRevealOpen(false)}>Edit</button>
-                  <button type="button" className="approveMini">Approve</button>
+                  <button type="button" className="oldApproveBtn">Approve</button>
                 </div>
               </div>
             </div>
