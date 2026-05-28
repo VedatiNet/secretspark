@@ -9,13 +9,14 @@ export default function Home() {
   const [category, setCategory] = useState("partner");
   const [message, setMessage] = useState("");
   const [sparked, setSparked] = useState(false);
+  const [revealOpen, setRevealOpen] = useState(false);
   const suggestionIndex = useRef({ partner: 0, family: 0, friends: 0, work: 0 });
   const theme = THEMES[category];
 
   const previewText = useMemo(() => {
     const clean = message.trim();
     if (!clean) return "Your words will appear here as a soft preview before the cinematic reveal.";
-    return clean.length > 150 ? clean.slice(0, 150) + "..." : clean;
+    return clean.length > 180 ? clean.slice(0, 180) + "..." : clean;
   }, [message]);
 
   function sparkEmotion() {
@@ -42,15 +43,7 @@ export default function Home() {
         <meta name="theme-color" content={theme.deep} />
       </Head>
 
-      <main
-        className="app"
-        style={{
-          "--primary": theme.primary,
-          "--second": theme.second,
-          "--soft": theme.soft,
-          "--deep": theme.deep,
-        }}
-      >
+      <main className="app" style={{"--primary": theme.primary, "--second": theme.second, "--soft": theme.soft, "--deep": theme.deep}}>
         <div className="stars" />
         <div className="ambient ambientLeft" />
         <div className="ambient ambientRight" />
@@ -68,15 +61,8 @@ export default function Home() {
               <div className="eyebrow">Choose the feeling</div>
               <div className="cats">
                 {categories.map((item) => (
-                  <button
-                    key={item.key}
-                    type="button"
-                    className={`cat ${category === item.key ? "active" : ""}`}
-                    onClick={() => changeCategory(item.key)}
-                  >
-                    <span>{item.icon}</span>
-                    <b>{item.label}</b>
-                    <small>{item.sub}</small>
+                  <button key={item.key} type="button" className={`cat ${category === item.key ? "active" : ""}`} onClick={() => changeCategory(item.key)}>
+                    <span>{item.icon}</span><b>{item.label}</b><small>{item.sub}</small>
                   </button>
                 ))}
               </div>
@@ -96,20 +82,12 @@ export default function Home() {
             <div>
               <label className="eyebrow" htmlFor="msg">Write the message</label>
               <div className="textareaWrap">
-                <textarea
-                  id="msg"
-                  value={message}
-                  maxLength={2200}
-                  placeholder={theme.quote}
-                  onChange={(e) => setMessage(e.target.value)}
-                />
+                <textarea id="msg" value={message} maxLength={2200} placeholder={theme.quote} onChange={(e) => setMessage(e.target.value)} />
                 <small>{message.length}/2200</small>
               </div>
 
-              <button className="sparkBtn" type="button" onClick={sparkEmotion}>
-                ✦ Spark the emotion
-              </button>
-              <Link className="previewBtn" href="/r/demo">▶ Preview the Cinematic Reveal</Link>
+              <button className="sparkBtn" type="button" onClick={sparkEmotion}>✦ Spark the emotion</button>
+              <button className="previewBtn" type="button" onClick={() => setRevealOpen(true)}>▶ Preview the Cinematic Reveal</button>
               <button className="approveBtn" type="button">Approve reveal to continue</button>
             </div>
           </section>
@@ -120,6 +98,22 @@ export default function Home() {
             <Link href="/contact">Contact</Link>
           </footer>
         </section>
+
+        {revealOpen && (
+          <section className="cinemaOverlay" role="dialog" aria-modal="true">
+            <button className="closeReveal" type="button" onClick={() => setRevealOpen(false)}>×</button>
+            <div className="shootingStarLive" />
+            <div className="cinemaParticles" />
+            <div className="envelopeReveal">
+              <div className="envelopeTop" />
+              <div className="waxSeal">✦</div>
+              <div className="letterReveal">
+                <small>A SecretSpark for {theme.label}</small>
+                <p>“{previewText}”</p>
+              </div>
+            </div>
+          </section>
+        )}
       </main>
     </>
   );
