@@ -1,17 +1,3 @@
 import Head from "next/head";
 import Link from "next/link";
-
-export default function Reveal() {
-  return (
-    <main className="reveal">
-      <Head><title>SecretSpark Reveal</title></Head>
-      <div className="shootingStar" />
-      <section className="letter">
-        <div className="seal">✦</div>
-        <h1>A SecretSpark is waiting</h1>
-        <p>This is the cinematic reveal preview. Next phase: real private links, payment, and message delivery.</p>
-        <Link href="/" className="previewBtn">Create your own</Link>
-      </section>
-    </main>
-  );
-}
+export default function Reveal(){return <main className="reveal"><Head><title>SecretSpark Reveal</title></Head><section className="letter"><h1>A SecretSpark is waiting</h1><p>This is the receiver route placeholder. The real saved message will connect here in the next backend phase.</p><Link href="/" className="previewBtn">Create your own</Link></section></main>}

@@ -22,17 +22,22 @@ export default function Home() {
   function sparkEmotion() {
     const list = SUGGESTIONS[category] || [];
     if (list.length) {
-      const i = suggestionIndex.current[category] % list.length;
-      setMessage(list[i]);
-      suggestionIndex.current[category] = i + 1;
+      const index = suggestionIndex.current[category] % list.length;
+      setMessage(list[index]);
+      suggestionIndex.current[category] = index + 1;
     }
     setSparked(true);
-    setTimeout(() => setSparked(false), 1000);
+    window.setTimeout(() => setSparked(false), 1000);
   }
 
-  function changeCategory(next) {
-    setCategory(next);
+  function changeCategory(nextCategory) {
+    setCategory(nextCategory);
     setMessage("");
+  }
+
+  function openRevealPreview() {
+    setRevealOpen(false);
+    window.setTimeout(() => setRevealOpen(true), 30);
   }
 
   return (
@@ -47,7 +52,7 @@ export default function Home() {
         <div className="stars" />
         <div className="ambient ambientLeft" />
         <div className="ambient ambientRight" />
-        {sparked && <div className="sparkBurst"><span>✦</span><span>✧</span><span>✣</span><span>✦</span></div>}
+        {sparked && <div className="sparkBurst" aria-hidden="true"><span>✦</span><span>✧</span><span>✣</span><span>✦</span></div>}
 
         <section className="wrap">
           <header className="top">
@@ -56,7 +61,6 @@ export default function Home() {
               <p>Turn emotions into unforgettable moments.</p>
               <strong>$1.99 per SecretSpark moment</strong>
             </div>
-
             <div className="selector">
               <div className="eyebrow">Choose the feeling</div>
               <div className="cats">
@@ -72,46 +76,27 @@ export default function Home() {
           <section className="mainGrid">
             <div>
               <div className="eyebrow">Live message preview</div>
-              <article className="previewCard">
-                <div className="sparkIcon">✣</div>
-                <p>“{previewText}”</p>
-                <small>Prepared for a {theme.label} reveal</small>
-              </article>
+              <article className="previewCard"><div className="sparkIcon">✣</div><p>“{previewText}”</p><small>Prepared for a {theme.label} reveal</small></article>
             </div>
-
             <div>
               <label className="eyebrow" htmlFor="msg">Write the message</label>
-              <div className="textareaWrap">
-                <textarea id="msg" value={message} maxLength={2200} placeholder={theme.quote} onChange={(e) => setMessage(e.target.value)} />
-                <small>{message.length}/2200</small>
-              </div>
-
+              <div className="textareaWrap"><textarea id="msg" value={message} maxLength={2200} placeholder={theme.quote} onChange={(event) => setMessage(event.target.value)} /><small>{message.length}/2200</small></div>
               <button className="sparkBtn" type="button" onClick={sparkEmotion}>✦ Spark the emotion</button>
-              <button className="previewBtn" type="button" onClick={() => setRevealOpen(true)}>▶ Preview the Cinematic Reveal</button>
+              <button className="previewBtn" type="button" onClick={openRevealPreview}>▶ Preview the Cinematic Reveal</button>
               <button className="approveBtn" type="button">Approve reveal to continue</button>
             </div>
           </section>
 
-          <footer>
-            <Link href="/terms">Terms</Link>
-            <Link href="/privacy">Privacy</Link>
-            <Link href="/contact">Contact</Link>
-          </footer>
+          <footer><Link href="/terms">Terms</Link><Link href="/privacy">Privacy</Link><Link href="/contact">Contact</Link></footer>
         </section>
 
         {revealOpen && (
           <section className="cinemaOverlay" role="dialog" aria-modal="true">
-            <button className="closeReveal" type="button" onClick={() => setRevealOpen(false)}>×</button>
-            <div className="shootingStarLive" />
-            <div className="cinemaParticles" />
-            <div className="envelopeReveal">
-              <div className="envelopeTop" />
-              <div className="waxSeal">✦</div>
-              <div className="letterReveal">
-                <small>A SecretSpark for {theme.label}</small>
-                <p>“{previewText}”</p>
-              </div>
-            </div>
+            <button className="closeReveal" type="button" onClick={() => setRevealOpen(false)} aria-label="Close cinematic reveal preview">×</button>
+            <div className="starField" />
+            <div className="energyCore"><div className="energyRing" /><div className="energyRing delay1" /><div className="energyRing delay2" /><div className="energyPulse" /></div>
+            <div className="flashReveal" />
+            <div className="cinematicMessage"><p>“{previewText}”</p></div>
           </section>
         )}
       </main>
