@@ -48,3 +48,26 @@ textarea {
     line-height: 1.5 !important;
   }
 }
+
+
+
+/* SecretSpark v9 Cinematic Reveal Modal Patch */
+.previewBtn{cursor:pointer!important}
+.cinemaOverlay{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at 50% 35%,var(--soft),transparent 34%),radial-gradient(circle at 50% 85%,rgba(255,255,255,.055),transparent 30%),rgba(2,3,10,.96);display:grid;place-items:center;overflow:hidden;animation:cinemaIn .55s ease both}
+.closeReveal{position:fixed;right:22px;top:18px;width:44px;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.055);color:rgba(255,255,255,.86);font-size:30px;line-height:1;cursor:pointer;z-index:3}
+.shootingStarLive{position:absolute;top:-60px;left:18%;width:7px;height:7px;border-radius:999px;background:#fff;box-shadow:0 0 24px #fff,0 0 50px var(--primary);animation:shootingLive 1.65s cubic-bezier(.16,.84,.31,1) .2s forwards}
+.shootingStarLive:after{content:"";position:absolute;width:160px;height:2px;right:2px;top:3px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65));transform:rotate(-32deg);transform-origin:right center}
+.cinemaParticles{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.55) 1px,transparent 1.6px),radial-gradient(circle,rgba(255,255,255,.22) 1px,transparent 1.4px);background-size:110px 110px,64px 64px;opacity:.22;animation:particlesFloat 18s linear infinite}
+.envelopeReveal{position:relative;width:min(620px,88vw);min-height:min(420px,70vh);border-radius:34px;background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.035)),linear-gradient(180deg,rgba(16,17,34,.88),rgba(8,9,22,.96));border:1px solid rgba(255,255,255,.16);box-shadow:0 40px 140px rgba(0,0,0,.60),0 0 55px var(--soft),inset 0 1px 0 rgba(255,255,255,.08);display:grid;place-items:center;padding:40px;overflow:hidden;animation:envelopeRise .9s cubic-bezier(.16,.84,.31,1) .35s both}
+.envelopeTop{position:absolute;inset:0;background:linear-gradient(135deg,transparent 49%,rgba(255,255,255,.055) 50%,transparent 51%),linear-gradient(225deg,transparent 49%,rgba(255,255,255,.045) 50%,transparent 51%);opacity:.7;pointer-events:none}
+.waxSeal{position:absolute;top:28px;width:74px;height:74px;border-radius:999px;display:grid;place-items:center;color:white;font-size:30px;background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.35),transparent 28%),linear-gradient(135deg,var(--primary),var(--second));box-shadow:0 18px 55px var(--soft);animation:sealPulse 2.4s ease-in-out infinite}
+.letterReveal{margin-top:60px;width:min(500px,100%);text-align:center;animation:letterIn .95s ease .9s both}
+.letterReveal small{display:block;margin-bottom:20px;color:rgba(255,255,255,.48);text-transform:uppercase;letter-spacing:.32em;font-size:11px;font-weight:800}
+.letterReveal p{margin:0;font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:400;font-size:clamp(25px,4.6vw,43px);line-height:1.35;color:rgba(255,255,255,.94);text-shadow:0 8px 32px rgba(0,0,0,.28)}
+@keyframes cinemaIn{from{opacity:0}to{opacity:1}}
+@keyframes shootingLive{0%{transform:translate3d(0,0,0) scale(.7);opacity:0}15%{opacity:1}100%{transform:translate3d(58vw,58vh,0) scale(2.2);opacity:0}}
+@keyframes particlesFloat{to{background-position:180px 220px,90px 120px}}
+@keyframes envelopeRise{from{transform:translateY(42px) scale(.94);opacity:0;filter:blur(10px)}to{transform:translateY(0) scale(1);opacity:1;filter:blur(0)}}
+@keyframes letterIn{from{transform:translateY(20px);opacity:0;filter:blur(8px)}to{transform:translateY(0);opacity:1;filter:blur(0)}}
+@keyframes sealPulse{0%,100%{transform:scale(1);box-shadow:0 18px 55px var(--soft)}50%{transform:scale(1.035);box-shadow:0 24px 75px var(--soft)}}
+@media(max-width:760px){.envelopeReveal{width:90vw;min-height:62vh;padding:28px 22px;border-radius:30px}.waxSeal{width:62px;height:62px;font-size:25px}.letterReveal{margin-top:54px}.letterReveal small{font-size:9px;letter-spacing:.24em}.letterReveal p{font-size:25px;line-height:1.42}}
