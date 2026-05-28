@@ -1,3 +1,3 @@
-# SecretSpark FULL RECOVERY v8
+# SecretSpark Restore Original Reveal v11
 
-Full safe recovery package with CSS, _app.js, autofill, category colors, and working Next.js structure.
+Restores the earlier black-sky reveal: stars, vibrating dark orb, loading text, implosion burst, white flash, and final message card with Edit/Approve.
